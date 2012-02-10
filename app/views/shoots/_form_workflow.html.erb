@@ -1,0 +1,30 @@
+<% c = 0 %>
+<% Shoot::MetaInfo::All.each do |mi| %>
+
+  <% if (c % 3) == 0 %>
+    <div class='row'>
+  <% end %>
+
+  <div class='four columns'> 
+    <h4><%= mi[:name] %></h4>
+    <div class="field">
+      <%= f.label 'Expected' %>
+      <%= text_field_tag "shoot[meta][#{mi[:key]}_expected]", shoot.meta[mi[:key] + "_expected"], :class => 'input-text', :disabled => true %>
+    </div>
+    <div class="field">
+      <%= f.label 'Actual' %>
+      <%= text_field_tag "shoot[meta][#{mi[:key]}_actual]", shoot.meta[mi[:key] + "_actual"], :class => 'input-text datepicker' %>
+    </div>
+    <div class="field">
+      <%= f.label 'Delay Cause' %>
+      <%= text_area_tag "shoot[meta][#{mi[:key]}_delay_cause]", shoot.meta[mi[:key] + "_delay_cause"], :class => 'input-text' %>
+    </div>
+  </div>
+
+  <% if (c % 3) == 2 %>
+    </div>
+  <% end %>
+
+  <% c += 1 %>
+
+<% end %>

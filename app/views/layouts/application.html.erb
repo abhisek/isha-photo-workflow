@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Isha | Photoshoot Tracking</title>
+  <%= stylesheet_link_tag    "application" %>
+  <%= javascript_include_tag "application" %>
+  <%= stylesheet_link_tag    "/external/jquery-ui/jquery-ui-1.8.17.custom.css" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+  <div class='container'>
+    <div class='row' id='topbar'>
+      <div class='one columns offset-by-eleven'>
+        <%= link_to "Logout", destroy_user_session_path, :method => :delete %>
+      </div>
+    </div>
+
+    <%= yield %>
+  </div>
+
+</body>
+</html>

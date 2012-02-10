@@ -1,0 +1,36 @@
+<div class='row'>
+
+  <div class='row'>
+    <p><strong>Event: </strong><%= @shoot.event %></p>
+    <p><strong>Photographer: </strong><%= @shoot.photographer %></p>
+    <p><strong>Shoot Date: </strong><%= @shoot.meta[:shoot_date] %></p>
+    <p><strong>Report Date: </strong><%= @shoot.meta[:report_date] %></p>
+  </div>
+
+  <div class='row'>
+    <% c = 0 %>
+    <% Shoot::MetaInfo::All.each do |mi| %>
+    <% if (c % 3) == 0 %>
+      <div class='row'>
+    <% end %>
+
+
+      <div class='four columns'>
+        <strong><%= mi[:name] %></strong>
+        <p><strong>Expected: </strong> <%= @shoot.meta[mi[:key] + "_expected"] %></p>
+        <p><strong>Actual: </strong> <%= @shoot.meta[mi[:key] + "_actual"] %></p>
+        <p><strong>Delay Cause: </strong> <%= @shoot.meta[mi[:key] + "_delay_cause"] %> </p>
+      </div>
+
+    <% if (c % 3) == 2 %>
+      </div>
+    <% end %>
+    <% c += 1 %>
+    <% end %>
+  </div>
+
+
+  <%= link_to 'Edit', edit_shoot_path(@shoot) %> |
+  <%= link_to 'Back', shoots_path %>
+
+</div>

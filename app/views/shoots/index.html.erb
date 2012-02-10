@@ -1,0 +1,29 @@
+<h1>Listing shoots</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Event</th>
+    <th>Description</th>
+    <th>Photographer</th>
+    <th></th>
+  </tr>
+  </thead>
+
+<% @shoots.each do |shoot| %>
+  <tr>
+    <td><%= shoot.event %></td>
+    <td><%= shoot.description %></td>
+    <td><%= shoot.photographer %></td>
+    <td>
+      <%= link_to 'Show', shoot %> &nbsp; &nbsp; 
+      <%= link_to 'Edit', edit_shoot_path(shoot) %> &nbsp; &nbsp;
+      <%= link_to 'Destroy', shoot, confirm: 'Are you sure?', method: :delete %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Shoot', new_shoot_path %>

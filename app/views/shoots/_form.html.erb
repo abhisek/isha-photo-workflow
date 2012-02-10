@@ -1,0 +1,46 @@
+<%= form_for(@shoot, :html => {:class => 'nice'}) do |f| %>
+  <% if @shoot.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@shoot.errors.count, "error") %> prohibited this shoot from being saved:</h2>
+
+      <ul>
+      <% @shoot.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :event %>
+    <%= f.text_field :event, :class => 'input-text' %>
+  </div>
+  <div class="field">
+    <%= f.label :description %>
+    <%= f.text_field :description, :class => 'input-text' %>
+  </div>
+  <div class="field">
+    <%= f.label :photographer %>
+    <%= f.text_field :photographer, :class => 'input-text' %>
+  </div>
+  <div class="field">
+    <%= f.label :shoot_date %>
+    <%= text_field_tag 'shoot[meta][shoot_date]', @shoot.meta[:shoot_date], :class => 'input-text datepicker'  %>
+  </div>
+  <div class="field">
+    <%= f.label :report_date %>
+    <%= text_field_tag 'shoot[meta][report_date]', @shoot.meta[:report_date], :class => 'input-text datepicker'  %>
+  </div>
+
+  <% unless @shoot.new_record? %>
+    <%= render :partial => 'form_workflow', :locals => {:f => f, :shoot => @shoot} %>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<script type='text/javascript'>
+  $('.datepicker').datepicker();
+</script>
