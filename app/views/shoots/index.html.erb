@@ -1,7 +1,43 @@
 <div class='row'>
-  <div class="three columns"> <h3 class="whiteColor">Listing Shoots</h3></div> 
-  <div class="six columns offset-by-three topMargin10">
-    <!-- Top Filters -->
+  <div class='row'>
+    <div class="three columns"> <h3 class="whiteColor">Listing Shoots</h3></div> 
+    <div class="six columns topMargin10">
+      <%= link_to "Show Filters", '#', :id => 'FilterButton', :class => 'small orange radius button' %>
+    </div>
+  </div>
+  <div id='FilterBox' class='row' style='display: none'>
+    <%= form_tag '/shoots/filter', :class => 'nice', :id => 'FilterForm' do %>
+    <div class='loginBox' style='margin-top: 2em;'>
+      <!-- Shoot Date -->
+      <div class='row'>
+        <div class='four columns'>
+          <label>Creation Date Start</label>
+          <%= text_field_tag 'search[create_start]', @search[:create_start], :class => 'input-text datepicker FilterFormElem' %>
+        </div>
+        <div class='four columns'>
+          <label>Creation Date End</label>
+          <%= text_field_tag 'search[create_end]', @search[:create_end], :class => 'input-text datepicker FilterFormElem' %>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='four columns'>
+          <label>Event</label>
+          <%= text_field_tag 'search[event]', @search[:event], :class => 'input-text FilterFormElem' %>
+        </div>
+        <div class='four columns'>
+          <label>Photographer</label>
+          <%= text_field_tag 'search[photographer]', @search[:photographer], :class => 'input-text FilterFormElem' %>
+        </div>
+      </div>
+
+      <div class='row'>
+        <%= submit_tag "Apply Filters", :class => 'medium orange radius button' %>
+        <%= button_tag "Clear Filters", :class => 'medium orange radius button', :id => 'FormResetBtn' %>
+      </div>
+
+    </div>
+    <% end %>
+    <br/>
   </div>
 </div>
 
@@ -12,24 +48,50 @@
       <th>Event</th>
       <th>Description</th>
       <th>Photographer</th>
-      <th></th>
+      <th width='15%'></th>
     </tr>
     </thead>
 
   <% @shoots.each do |shoot| %>
-    <tr>
+    <tr class='<%= colorize_shoot_entry(shoot) %>'>
+
       <td><%= shoot.event %></td>
       <td><%= shoot.description %></td>
       <td><%= shoot.photographer %></td>
       <td>
-        <%= link_to 'Show', shoot %> &nbsp; &nbsp; 
-        <%= link_to 'Edit', edit_shoot_path(shoot) %> &nbsp; &nbsp;
-        <%= link_to 'Destroy', shoot, confirm: 'Are you sure?', method: :delete %>
+        <%= link_to image_tag('famfam/application_view_icons.png'), shoot, :title => 'View Shoot' %> &nbsp; &nbsp; 
+        <%= link_to image_tag('famfam/application_edit.png'), edit_shoot_path(shoot), :title => 'Edit Shoot' %> &nbsp; &nbsp;
+        <%= link_to image_tag('famfam/delete.png'), shoot, :confirm => 'Are you sure?', :method => :delete, :title => 'Delete Shoot' %>
       </td>
     </tr>
   <% end %>
+
+    <tr>
+      <td colspan=4>
+        <%= will_paginate @shoots %>
+      </td>
+    </tr>
+
   </table>
+</div>
+
+<div class='row'>
 </div>
 
 <%= link_to 'New Shoot', new_shoot_path, :class => 'radius orange medium button' %>
 
+
+<script>
+  $('#FilterButton').click(function() {
+    $('#FilterBox').toggle();
+  });
+
+  $('.datepicker').datepicker();
+  $('#FormResetBtn').click(function() { 
+    $.each($('.FilterFormElem'), function(i, v) {
+      v.value = "";
+    });
+
+    return false;
+  });
+</script>

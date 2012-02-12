@@ -1,7 +1,11 @@
 PhotoTrack::Application.routes.draw do
+  # Filter
+  match '/shoots/filter' => 'shoots#index'
+
   resources :shoots
 
   devise_for :users
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

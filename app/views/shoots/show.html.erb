@@ -1,36 +1,46 @@
 <div class='row'>
 
   <div class='row'>
+    <div class="three columns"> <h3 class="whiteColor"><%= @shoot.event %></h3></div> 
+    <div class="four columns offset-by-five"> 
+      <h3><small>Photographer: <%= @shoot.photographer %></small></h3> 
+    </div>
+  </div>
+  <div class='row'>
+    <div class="column whiteColor">Shoot Date: <%= @shoot.meta[:shoot_date] %></div>     
+    <div class="column whiteColor">Report Date: <%= @shoot.meta[:report_date] %></div>    
+  </div>
+
+  <!--
     <p><strong>Event: </strong><%= @shoot.event %></p>
     <p><strong>Photographer: </strong><%= @shoot.photographer %></p>
     <p><strong>Shoot Date: </strong><%= @shoot.meta[:shoot_date] %></p>
     <p><strong>Report Date: </strong><%= @shoot.meta[:report_date] %></p>
-  </div>
+  -->
 
   <div class='row'>
-    <% c = 0 %>
-    <% Shoot::MetaInfo::All.each do |mi| %>
-    <% if (c % 3) == 0 %>
-      <div class='row'>
-    <% end %>
-
-
-      <div class='four columns'>
-        <strong><%= mi[:name] %></strong>
-        <p><strong>Expected: </strong> <%= @shoot.meta[mi[:key] + "_expected"] %></p>
-        <p><strong>Actual: </strong> <%= @shoot.meta[mi[:key] + "_actual"] %></p>
-        <p><strong>Delay Cause: </strong> <%= @shoot.meta[mi[:key] + "_delay_cause"] %> </p>
-      </div>
-
-    <% if (c % 3) == 2 %>
-      </div>
-    <% end %>
-    <% c += 1 %>
-    <% end %>
+    <table class='clear'>
+      <thead>
+        <tr>
+          <th style="width:20%;"></th> 
+          <th style="width:15%;">Expected Date</th> 
+          <th style="width:15%;">Actual Date</th> 
+          <th>Delay Cause</th> 
+        </tr>
+      </thead>
+      <% Shoot::MetaInfo::All.each do |mi| %>
+        <tr>
+          <td><%= mi[:name] %></td>
+          <td><%= @shoot.meta[mi[:key] + "_expected"] %></td>
+          <td><%= @shoot.meta[mi[:key] + "_actual"] %></td>
+          <td><%= @shoot.meta[mi[:key] + "_delay_cause"] %></td>
+        </tr>
+      <% end %>
+    </table>
   </div>
 
 
-  <%= link_to 'Edit', edit_shoot_path(@shoot) %> |
-  <%= link_to 'Back', shoots_path %>
+  <%= link_to 'Edit', edit_shoot_path(@shoot), :class => 'small orange radius button' %> |
+  <%= link_to 'Back', shoots_path, :class => 'small orange radius button' %>
 
 </div>

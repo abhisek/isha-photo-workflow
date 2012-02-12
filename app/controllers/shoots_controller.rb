@@ -4,8 +4,32 @@ class ShootsController < ApplicationController
   # GET /shoots
   # GET /shoots.json
   def index
-    @shoots = Shoot.all
+    session[:search] ||= {}
+    session[:search].merge!((params[:search] || {}).symbolize_keys)
+    @search = session[:search]
 
+    # Find all
+    @shoots = Shoot.order('created_at DESC')
+
+    # Filter
+    @search.keys.each do |key|
+      unless @search[key].to_s.empty?
+        case key
+        when /create_start/
+          @shoots = @shoots.after_create(Date.strptime(@search[key].to_s, "%m/%d/%Y"))
+        when /create_end/
+          @shoots = @shoots.before_create(Date.strptime(@search[key].to_s, "%m/%d/%Y"))
+        when /event/
+          @shoots = @shoots.event_like(@search[key].to_s)
+        when /photographer/
+          @shoots = @shoots.photographer_like(@search[key].to_s)
+        end
+      end
+    end
+
+    # Paginate
+    @shoots = @shoots.paginate(:page => (params[:page] || 1), :per_page => 20)
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @shoots }

@@ -32,12 +32,8 @@
     <%= text_field_tag 'shoot[meta][report_date]', @shoot.meta[:report_date], :class => 'input-text datepicker'  %>
   </div>
 
-  <% unless @shoot.new_record? %>
-    <%= render :partial => 'form_workflow', :locals => {:f => f, :shoot => @shoot} %>
-  <% end %>
-
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit :class => 'medium radius orange button' %>
   </div>
 <% end %>
 
