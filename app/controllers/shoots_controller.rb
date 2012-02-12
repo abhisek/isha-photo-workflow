@@ -16,13 +16,13 @@ class ShootsController < ApplicationController
       unless @search[key].to_s.empty?
         case key
         when /create_start/
-          @shoots = @shoots.after_create(Date.strptime(@search[key].to_s, "%m/%d/%Y"))
+          @shoots = @shoots.f_after_create(Date.strptime(@search[key].to_s, "%m/%d/%Y"))
         when /create_end/
-          @shoots = @shoots.before_create(Date.strptime(@search[key].to_s, "%m/%d/%Y"))
+          @shoots = @shoots.f_before_create(Date.strptime(@search[key].to_s, "%m/%d/%Y"))
         when /event/
-          @shoots = @shoots.event_like(@search[key].to_s)
+          @shoots = @shoots.f_event_like(@search[key].to_s)
         when /photographer/
-          @shoots = @shoots.photographer_like(@search[key].to_s)
+          @shoots = @shoots.f_photographer_like(@search[key].to_s)
         end
       end
     end

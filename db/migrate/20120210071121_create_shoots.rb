@@ -9,5 +9,10 @@ class CreateShoots < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    add_index :shoots, :id
+    add_index :shoots, :event
+    add_index :shoots, :description
+    add_index :shoots, :photographer
   end
 end
