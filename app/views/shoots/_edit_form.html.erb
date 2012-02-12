@@ -1,0 +1,56 @@
+<%= form_for(@shoot, :html => {:class => 'nice'}) do |f| %>
+
+  <% if @shoot.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@shoot.errors.count, "error") %> prohibited this shoot from being saved:</h2>
+
+      <ul>
+      <% @shoot.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class='row'>
+    <div class="three columns">
+      <h3 class="whiteColor"> 
+        <%= f.text_field :event, :class => 'large input-text' %>
+      </h3>
+    </div>
+
+    <div class="four columns offset-by-five">
+      <div class="fleft whiteColor">Photographer: </div> 
+      <div class="fleft"> 
+        <%= f.text_field :photographer, :class => 'medium input-text' %>
+      </div>
+    </div>
+  </div>
+
+  <div class='row'>
+    <div class="six columns"> 
+      <div class="column whiteColor"> 
+        <div class="fleft">Shoot Date: </div> 
+        <div class="fleft"><%= text_field_tag 'shoot[meta][shoot_date]', @shoot.meta[:shoot_date], :class => 'small input-text datepicker'%></div>
+      </div>
+
+      <div class="column whiteColor"> 
+        <div class="fleft">Report Date: </div> 
+        <div class="fleft"><%= text_field_tag 'shoot[meta][report_date]', @shoot.meta[:report_date], :class => 'small input-text datepicker'%></div>
+      </div>
+    </div>
+
+    <div class="two columns offset-by-four"> 
+      <%= f.submit "Save", :class => 'radius small orange button' %>
+      <%= button_tag "Back", :class => 'radius small orange button' %>
+    </div>
+  </div>
+
+  <div class='row'>
+    <%= render :partial => 'form_workflow', :locals => {:f => f, :shoot => @shoot} %>
+  </div>
+<% end %>
+
+<script type='text/javascript'>
+  $('.datepicker').datepicker();
+</script>

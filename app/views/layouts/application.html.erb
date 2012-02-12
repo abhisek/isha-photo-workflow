@@ -1,22 +1,45 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Isha | Photoshoot Tracking</title>
-  <%= stylesheet_link_tag    "application" %>
-  <%= javascript_include_tag "application" %>
-  <%= stylesheet_link_tag    "/external/jquery-ui/jquery-ui-1.8.17.custom.css" %>
-  <%= csrf_meta_tags %>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Isha | Photoshoot Tracking</title>
+    <%= stylesheet_link_tag    "application" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+  <!--[if lt IE 9]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+  <![endif]--> 
+ 
+ 
+  <!-- IE Fix for HTML5 Tags --> 
+  <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]--> 
 </head>
 <body>
 
   <div class='container'>
-    <div class='row' id='topbar'>
-      <div class='one columns offset-by-eleven'>
-        <%= link_to "Logout", destroy_user_session_path, :method => :delete %>
+  <% if user_signed_in? %>
+    <div class='container topMargin10 topHeader'>
+      <div class='row'>
+        <div class="two columns"><%= image_tag 'logo.png' %></div> 
+        <div class="two columns offset-by-eight topMargin25"> 
+          <%= link_to "Logout", destroy_user_session_path, :method => :delete, :class => 'radius medium orange button' %>
+        </div>
       </div>
     </div>
+  <% else %>
+    <div class="row header whiteColor"> 
+      <div class="four columns centered"><h2>Photo Shoot App</h2></div>
+      <!-- <div class="five columns centered"><p>Photo Shoot tracking and management.</p></div> -->
+    </div>
+  <% end %>
 
-    <%= yield %>
+    <div class='container'>
+      <%= yield %>
+    </div>
+
   </div>
 
 </body>

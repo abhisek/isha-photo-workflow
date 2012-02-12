@@ -1,7 +1,8 @@
 <div class='row'>
-<div class='eight columns centered'>
+<div class='eight columns centered loginBox'>
 
-<h2>Sign up</h2>
+<h3>Sign up</h3>
+<p>If you already have an account on photoshoot app, you can <a href="/"><u>Sign in Here.</u></a></p>
 
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'nice'}) do |f| %>
   <%= devise_error_messages! %>
@@ -18,7 +19,7 @@
   <div><%= f.label :password_confirmation %>
     <%= f.password_field :password_confirmation, :class => 'input-text' %></div>
 
-  <div><%= f.submit "Sign up" %></div>
+  <div><%= f.submit "Create Account", :class => 'radius medium orange button' %></div>
 <% end %>
 
 <%= render :partial => "devise/shared/links" %>
