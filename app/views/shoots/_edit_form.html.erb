@@ -14,6 +14,7 @@
 
   <div class='row'>
     <div class="three columns">
+      <div class="fleft whiteColor">Event: </div> 
       <h3 class="whiteColor"> 
         <%= f.text_field :event, :class => 'large input-text' %>
       </h3>
@@ -30,17 +31,17 @@
   <div class='row'>
     <div class="six columns"> 
       <div class="column whiteColor"> 
-        <div class="fleft">Shoot Date: </div> 
-        <div class="fleft"><%= text_field_tag 'shoot[meta][shoot_date]', @shoot.meta[:shoot_date], :class => 'small input-text datepicker'%></div>
+        <div class="fleft">Shot On: </div> 
+        <div class="fleft"><%= f.text_field :shot_on, :class => 'small input-text datepicker'%></div>
       </div>
 
       <div class="column whiteColor"> 
-        <div class="fleft">Report Date: </div> 
-        <div class="fleft"><%= text_field_tag 'shoot[meta][report_date]', @shoot.meta[:report_date], :class => 'small input-text datepicker'%></div>
+        <div class="fleft">Reported On: </div> 
+        <div class="fleft"><%= f.text_field :reported_on, :class => 'small input-text datepicker'%></div>
       </div>
     </div>
 
-    <div class="two columns offset-by-four"> 
+    <div class="four columns offset-by-two"> 
       <%= f.submit "Save", :class => 'radius small orange button' %>
       <%= link_to "Back", '/', :class => 'radius small orange button' %>
     </div>
@@ -52,5 +53,9 @@
 <% end %>
 
 <script type='text/javascript'>
-  $('.datepicker').datepicker();
+  $('.datepicker').datepicker({ dateFormat: 'dd/mm/yy' });
+  $('#shoot_photographer').autocomplete({
+    delay: 0,
+    source: [<%= raw(@photographers.collect {|e| "\"#{e}\""}.join(",")) %>]
+  });
 </script>

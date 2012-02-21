@@ -66,20 +66,24 @@ class Shoot < ActiveRecord::Base
   end
 
   def my_before_save
-    # Ensure date formats are correct
-    Date.strptime(self.meta[:shoot_date], "%m/%d/%Y")
-    Date.strptime(self.meta[:report_date], "%m/%d/%Y")
-
-    rd = Date.strptime(self.meta[:report_date], "%m/%d/%Y")
+    rd = self.reported_on
 
     MetaInfo::All.each do |mi|
-      self.meta[mi[:key] + "_expected"] = (rd + mi[:off]).strftime("%m/%d/%Y")
+      self.meta[mi[:key] + "_expected"] = (rd + mi[:off]).strftime(Date::DATE_FORMATS[:default])
     end
 
     # Ensure correctness of date format
     MetaInfo::All.each do |mi|
-      Date.strptime(self.meta[mi[:key] + "_expected"], "%m/%d/%Y")
-      Date.strptime(self.meta[mi[:key] + "_actual"], "%m/%d/%Y") unless self.meta[mi[:key] + "_actual"].to_s.empty?
+      Date.strptime(self.meta[mi[:key] + "_expected"], Date::DATE_FORMATS[:default])
+      Date.strptime(self.meta[mi[:key] + "_actual"], Date::DATE_FORMATS[:default]) unless self.meta[mi[:key] + "_actual"].to_s.empty?
+    end
+  end
+
+  def is_key_applicable?(k)
+    if (self.photographer !~ /chitranga/i) and (k == 'selsundar')
+      return false
+    else
+      return true
     end
   end
 

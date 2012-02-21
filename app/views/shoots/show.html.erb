@@ -2,22 +2,21 @@
 
   <div class='row'>
     <div class="three columns"> <h3 class="whiteColor"><%= @shoot.event %></h3></div> 
-    <div class="four columns offset-by-five"> 
+  </div>
+  <div class='row'>
+    <div class="four columns"> 
       <h3><small>Photographer: <%= @shoot.photographer %></small></h3> 
     </div>
   </div>
   <div class='row'>
-    <div class="column whiteColor">Shoot Date: <%= @shoot.meta[:shoot_date] %></div>     
-    <div class="column whiteColor">Report Date: <%= @shoot.meta[:report_date] %></div>    
+    <div class="column whiteColor"><strong>Shot On:</strong> <%= @shoot.shot_on %></div>     
+    <div class="column whiteColor"><strong>Reported On:</strong> <%= @shoot.reported_on %></div>    
   </div>
-
-  <!--
-    <p><strong>Event: </strong><%= @shoot.event %></p>
-    <p><strong>Photographer: </strong><%= @shoot.photographer %></p>
-    <p><strong>Shoot Date: </strong><%= @shoot.meta[:shoot_date] %></p>
-    <p><strong>Report Date: </strong><%= @shoot.meta[:report_date] %></p>
-  -->
-
+  <div class='row'>
+    <div class='whiteColor six columns' style='margin: 1em; padding: 0.5em;'>
+      <%= @shoot.description %>
+    </div>
+  </div>
   <div class='row'>
     <table class='clear'>
       <thead>
@@ -29,7 +28,8 @@
         </tr>
       </thead>
       <% Shoot::MetaInfo::All.each do |mi| %>
-        <tr>
+        <% next unless @shoot.is_key_applicable? mi[:key] %>
+        <tr class='<%= colorize_shoot_key(@shoot, mi[:key]) %>'>
           <td><%= mi[:name] %></td>
           <td><%= @shoot.meta[mi[:key] + "_expected"] %></td>
           <td><%= @shoot.meta[mi[:key] + "_actual"] %></td>

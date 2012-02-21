@@ -21,15 +21,17 @@
   </div>
   <div class="field">
     <%= f.label :photographer %>
-    <%= f.text_field :photographer, :class => 'input-text' %>
+    <%= f.text_field :photographer, :style => 'display: none' %>
+    <%= select_tag :photographer_select, options_for_select(@photographers + ["Other"], @shoot.photographer), :class => 'input-text' %>
+    <%= text_field_tag :photographer_text, nil, :class => 'input-text', :style => 'display: none;' %> 
   </div>
   <div class="field">
-    <%= f.label :shoot_date %>
-    <%= text_field_tag 'shoot[meta][shoot_date]', @shoot.meta[:shoot_date], :class => 'input-text datepicker'  %>
+    <%= f.label :shot_on %>
+    <%= f.text_field :shot_on, :class => 'input-text datepicker'  %>
   </div>
   <div class="field">
-    <%= f.label :report_date %>
-    <%= text_field_tag 'shoot[meta][report_date]', @shoot.meta[:report_date], :class => 'input-text datepicker'  %>
+    <%= f.label :reported_on %>
+    <%= f.text_field :reported_on, :class => 'input-text datepicker'  %>
   </div>
 
   <div class="actions">
@@ -38,5 +40,23 @@
 <% end %>
 
 <script type='text/javascript'>
-  $('.datepicker').datepicker();
+  $('.datepicker').datepicker({ dateFormat: 'dd/mm/yy' });
+  
+  $('#photographer_select').change(function() {
+    if($(this).val() == 'Other') {
+      $('#photographer_select').hide();
+      $('#photographer_text').show();
+    }
+  });
+
+  $('#new_shoot').submit(function() {
+    if($('#photographer_select').val() != 'Other') {
+      $('#shoot_photographer').val($('#photographer_select').val());
+    }
+    else {
+      $('#shoot_photographer').val($('#photographer_text').val());
+    }
+
+    return true;
+  });
 </script>

@@ -27,6 +27,8 @@ ActiveRecord::Schema.define(:version => 20120210081232) do
     t.string   "photographer"
     t.integer  "user_id"
     t.binary   "meta"
+    t.date     "shot_on"
+    t.date     "reported_on"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

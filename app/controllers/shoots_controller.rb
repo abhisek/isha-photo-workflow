@@ -1,5 +1,6 @@
 class ShootsController < ApplicationController
   before_filter :authenticate_user!
+  before_filter :load_setting_data
 
   # GET /shoots
   # GET /shoots.json
@@ -16,9 +17,17 @@ class ShootsController < ApplicationController
       unless @search[key].to_s.empty?
         case key
         when /create_start/
-          @shoots = @shoots.f_after_create(Date.strptime(@search[key].to_s, "%m/%d/%Y"))
+          #@shoots = @shoots.f_after_create(Date.strptime(@search[key].to_s, "%m/%d/%Y"))
         when /create_end/
-          @shoots = @shoots.f_before_create(Date.strptime(@search[key].to_s, "%m/%d/%Y"))
+          #@shoots = @shoots.f_before_create(Date.strptime(@search[key].to_s, "%m/%d/%Y"))
+        when /shot_on_start/
+          @shoots = @shoots.where('shot_on > ?', Date.strptime(@search[key].to_s, Date::DATE_FORMATS[:default]))
+        when /shot_on_end/
+          @shoots = @shoots.where('shot_on < ?', Date.strptime(@search[key].to_s, Date::DATE_FORMATS[:default]))
+        when /reported_on_start/
+          @shoots = @shoots.where('reported_on > ?', Date.strptime(@search[key].to_s, Date::DATE_FORMATS[:default]))
+        when /reported_on_end/
+          @shoots = @shoots.where('reported_on < ?', Date.strptime(@search[key].to_s, Date::DATE_FORMATS[:default]))
         when /event/
           @shoots = @shoots.f_event_like(@search[key].to_s)
         when /photographer/
@@ -28,7 +37,7 @@ class ShootsController < ApplicationController
     end
 
     # Paginate
-    @shoots = @shoots.paginate(:page => (params[:page] || 1), :per_page => 20)
+    @shoots = @shoots.paginate(:page => (params[:page] || 1), :per_page => 10)
     
     respond_to do |format|
       format.html # index.html.erb
@@ -107,4 +116,11 @@ class ShootsController < ApplicationController
       format.json { head :ok }
     end
   end
+
+  private
+
+  def load_setting_data
+    @photographers = Settings.photographers
+  end
+
 end

@@ -2,7 +2,8 @@
   <div class='row'>
     <div class="three columns"> <h3 class="whiteColor">Listing Shoots</h3></div> 
     <div class="six columns topMargin10">
-      <%= link_to "Show Filters", '#', :id => 'FilterButton', :class => 'small orange radius button' %>
+      <%= link_to "Search Options", '#', :id => 'FilterButton', :class => 'small orange radius button' %>
+      <%= link_to 'New Shoot', new_shoot_path, :class => 'small radius orange button' %>
     </div>
   </div>
   <div id='FilterBox' class='row' style='display: none'>
@@ -11,12 +12,22 @@
       <!-- Shoot Date -->
       <div class='row'>
         <div class='four columns'>
-          <label>Creation Date Start</label>
-          <%= text_field_tag 'search[create_start]', @search[:create_start], :class => 'input-text datepicker FilterFormElem' %>
+          <label>Shot After Date</label>
+          <%= text_field_tag 'search[shot_on_start]', @search[:shot_on_start], :class => 'input-text datepicker FilterFormElem' %>
         </div>
         <div class='four columns'>
-          <label>Creation Date End</label>
-          <%= text_field_tag 'search[create_end]', @search[:create_end], :class => 'input-text datepicker FilterFormElem' %>
+          <label>Shot Before Date</label>
+          <%= text_field_tag 'search[shot_on_end]', @search[:shot_on_end], :class => 'input-text datepicker FilterFormElem' %>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='four columns'>
+          <label>Reported After Date</label>
+          <%= text_field_tag 'search[reported_on_start]', @search[:reported_on_start], :class => 'input-text datepicker FilterFormElem' %>
+        </div>
+        <div class='four columns'>
+          <label>Reported Before Date</label>
+          <%= text_field_tag 'search[reported_on_end]', @search[:reported_on_end], :class => 'input-text datepicker FilterFormElem' %>
         </div>
       </div>
       <div class='row'>
@@ -31,8 +42,8 @@
       </div>
 
       <div class='row'>
-        <%= submit_tag "Apply Filters", :class => 'medium orange radius button' %>
-        <%= button_tag "Clear Filters", :class => 'medium orange radius button', :id => 'FormResetBtn' %>
+        <%= submit_tag "Search", :class => 'medium orange radius button' %>
+        <%= button_tag "Display All", :class => 'medium orange radius button', :id => 'FormResetBtn' %>
       </div>
 
     </div>
@@ -45,19 +56,23 @@
   <table class='clear'>
     <thead>
     <tr>
+      <th>ID</th>
       <th>Event</th>
-      <th>Description</th>
       <th>Photographer</th>
+      <th>Shot On</th>
+      <th>Reported On</th>
       <th width='15%'></th>
     </tr>
     </thead>
 
   <% @shoots.each do |shoot| %>
-    <tr class='<%= colorize_shoot_entry(shoot) %>'>
+    <tr class='<%= colorize_shoot_entry(shoot) %> eClickable' eid=<%= shoot.id %> >
 
+      <td><%= shoot.id %></td>
       <td><%= shoot.event %></td>
-      <td><%= shoot.description %></td>
       <td><%= shoot.photographer %></td>
+      <td><%= shoot.shot_on %></td>
+      <td><%= shoot.reported_on %></td>
       <td>
         <%= link_to image_tag('famfam/application_view_icons.png'), shoot, :title => 'View Shoot' %> &nbsp; &nbsp; 
         <%= link_to image_tag('famfam/application_edit.png'), edit_shoot_path(shoot), :title => 'Edit Shoot' %> &nbsp; &nbsp;
@@ -78,20 +93,26 @@
 <div class='row'>
 </div>
 
-<%= link_to 'New Shoot', new_shoot_path, :class => 'radius orange medium button' %>
-
-
 <script>
   $('#FilterButton').click(function() {
     $('#FilterBox').toggle();
   });
 
-  $('.datepicker').datepicker();
+  $('.datepicker').datepicker({ dateFormat: 'dd/mm/yy' });
+
   $('#FormResetBtn').click(function() { 
     $.each($('.FilterFormElem'), function(i, v) {
       v.value = "";
     });
+    //return false;
+  });
 
-    return false;
+  $('.eClickable').click(function() {
+    window.location = '/shoots/' + $(this).attr('eid');    
+  });
+
+  $('#search_photographer').autocomplete({
+    delay: 0,
+    source: [<%= raw(@photographers.collect {|e| "\"#{e}\""}.join(",")) %>]
   });
 </script>

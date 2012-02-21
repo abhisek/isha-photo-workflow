@@ -9,7 +9,7 @@
   </thead>
 
 <% Shoot::MetaInfo::All.each do |mi| %>
-  
+  <% next unless shoot.is_key_applicable? mi[:key] %>  
   <tr>
     <td><%= mi[:name] %></td>
     <td>

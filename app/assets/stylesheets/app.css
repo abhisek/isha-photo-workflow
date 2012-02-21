@@ -34,3 +34,7 @@
 .yellow {
   background-color: #ffcc66;
 }
+
+.eClickable {
+  cursor: pointer;
+}

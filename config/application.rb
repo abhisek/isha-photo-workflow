@@ -46,3 +46,7 @@ module PhotoTrack
     config.assets.version = '1.0'
   end
 end
+
+require 'common/settings'
+
+Settings.init
