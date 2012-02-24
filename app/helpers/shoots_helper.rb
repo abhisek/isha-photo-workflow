@@ -1,6 +1,6 @@
 module ShootsHelper
 
-  def colorize_shoot_entry(shoot)
+  def tag_shoot_entry(shoot)
     now = Date.current
 
     klass = ''
@@ -25,26 +25,37 @@ module ShootsHelper
 
     end
 
-    klass
+    color_to_tag(klass)
   end
 
-  def colorize_shoot_key(shoot, key)
+  def tag_shoot_key(shoot, key)
+    color = ''
     now = Date.current
     exp = Date.strptime(shoot.meta[key + "_expected"], Date::DATE_FORMATS[:default])
 
     if (shoot.is_key_applicable?(key)) and (exp < now)
 
       if shoot.meta[key + "_actual"].to_s.empty? 
-        return 'red'
+        return color_to_tag('red')
       end
 
       if Date.strptime(shoot.meta[key + "_actual"], Date::DATE_FORMATS[:default]) > exp
-        return 'yellow'
+        return color_to_tag('yellow')
       end
 
     end
 
-    return 'green' # none
+    color_to_tag('green')
   end
 
+  def color_to_tag(color)
+    case color.to_s
+    when /red/i
+      image_tag('flag-32.png', :size => '20x20')
+    when /yellow/i
+      image_tag('Flag-yellow-32.png', :size => '20x20')
+    else
+      ""
+    end
+  end
 end

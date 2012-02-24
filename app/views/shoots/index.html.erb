@@ -66,9 +66,9 @@
     </thead>
 
   <% @shoots.each do |shoot| %>
-    <tr class='<%= colorize_shoot_entry(shoot) %> eClickable' eid=<%= shoot.id %> >
+    <tr class='eClickable' eid=<%= shoot.id %> >
 
-      <td><%= shoot.id %></td>
+      <td><%= shoot.id %> <%= tag_shoot_entry(shoot) %></td>
       <td><%= shoot.event %></td>
       <td><%= shoot.photographer %></td>
       <td><%= shoot.shot_on %></td>

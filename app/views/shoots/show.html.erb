@@ -29,8 +29,8 @@
       </thead>
       <% Shoot::MetaInfo::All.each do |mi| %>
         <% next unless @shoot.is_key_applicable? mi[:key] %>
-        <tr class='<%= colorize_shoot_key(@shoot, mi[:key]) %>'>
-          <td><%= mi[:name] %></td>
+        <tr>
+          <td><%= mi[:name] %> <%= tag_shoot_key(@shoot, mi[:key]) %></td>
           <td><%= @shoot.meta[mi[:key] + "_expected"] %></td>
           <td><%= @shoot.meta[mi[:key] + "_actual"] %></td>
           <td><%= @shoot.meta[mi[:key] + "_delay_cause"] %></td>
