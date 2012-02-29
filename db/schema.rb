@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120210081232) do
+ActiveRecord::Schema.define(:version => 20120229183153) do
 
   create_table "shoot_logs", :force => true do |t|
     t.integer  "shoot_id"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(:version => 20120210081232) do
     t.date     "reported_on"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "active",       :default => true
   end
 
   add_index "shoots", ["description"], :name => "index_shoots_on_description"

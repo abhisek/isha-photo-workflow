@@ -24,7 +24,8 @@
     <div class='container topMargin10 topHeader'>
       <div class='row'>
         <div class="two columns"><%= image_tag 'logo.png' %></div> 
-        <div class="two columns offset-by-eight topMargin25"> 
+        <div class="four columns offset-by-six topMargin25"> 
+          <%= link_to "Home", "/", :class => 'radius medium orange button' %>
           <%= link_to "Logout", destroy_user_session_path, :method => :delete, :class => 'radius medium orange button' %>
         </div>
       </div>
@@ -39,6 +40,11 @@
     <div class='container'>
       <%= yield %>
     </div>
+<!--
+    <div class='footer'>
+      Developed by <%= link_to "IT Lero", "http://www.itlero.in" %>
+    </div>
+-->
 
   </div>
 

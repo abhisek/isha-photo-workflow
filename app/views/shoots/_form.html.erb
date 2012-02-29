@@ -13,11 +13,11 @@
 
   <div class="field">
     <%= f.label :event %>
-    <%= f.text_field :event, :class => 'input-text' %>
+    <%= f.text_field :event, :class => 'input-text required' %>
   </div>
   <div class="field">
     <%= f.label :description %>
-    <%= f.text_field :description, :class => 'input-text' %>
+    <%= f.text_field :description, :class => 'input-text required' %>
   </div>
   <div class="field">
     <%= f.label :photographer %>
@@ -27,11 +27,11 @@
   </div>
   <div class="field">
     <%= f.label :shot_on %>
-    <%= f.text_field :shot_on, :class => 'input-text datepicker'  %>
+    <%= f.text_field :shot_on, :class => 'input-text datepicker required'  %>
   </div>
   <div class="field">
     <%= f.label :reported_on %>
-    <%= f.text_field :reported_on, :class => 'input-text datepicker'  %>
+    <%= f.text_field :reported_on, :class => 'input-text datepicker required'  %>
   </div>
 
   <div class="actions">
@@ -48,6 +48,8 @@
       $('#photographer_text').show();
     }
   });
+
+  $('#new_shoot').validate();
 
   $('#new_shoot').submit(function() {
     if($('#photographer_select').val() != 'Other') {

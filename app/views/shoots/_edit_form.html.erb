@@ -43,7 +43,16 @@
 
     <div class="four columns offset-by-two"> 
       <%= f.submit "Save", :class => 'radius small orange button' %>
-      <%= link_to "Back", '/', :class => 'radius small orange button' %>
+      <%= link_to "Home", '/', :class => 'radius small orange button' %>
+    </div>
+  </div>
+
+  <div class='row'>
+    <div class="six columns">
+      <div class="column whiteColor">
+        <div class="fleft">Status: </div>
+        <div class="fleft"><%= select_tag 'shoot[active]', options_for_select([['Open', true], ['Closed', false]], @shoot.active) %></div>
+      </div>
     </div>
   </div>
 

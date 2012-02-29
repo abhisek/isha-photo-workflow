@@ -10,7 +10,14 @@ class ShootsController < ApplicationController
     @search = session[:search]
 
     # Find all
-    @shoots = Shoot.order('created_at DESC')
+    if @search[:status].to_s =~ /closed/i
+      @shoots = Shoot.where(:active => false)
+    else
+      @shoots = Shoot.where(:active => true)
+    end
+
+    # Order
+    @shoots = @shoots.order('created_at DESC')
 
     # Filter
     @search.keys.each do |key|
@@ -36,8 +43,16 @@ class ShootsController < ApplicationController
       end
     end
 
-    # Paginate
-    @shoots = @shoots.paginate(:page => (params[:page] || 1), :per_page => 10)
+    if (flag = {
+        'Red'       => :red,
+        'Yellow'    => :yellow,
+        'Normal'    => :none
+      }[@search[:flag]])
+      @shoots = @shoots.collect {|e| e if e.flag == flag}.compact
+    else
+      # Paginate (not compatible with non-relational filter)
+      @shoots = @shoots.paginate(:page => (params[:page] || 1), :per_page => 10)
+    end
     
     respond_to do |format|
       format.html # index.html.erb

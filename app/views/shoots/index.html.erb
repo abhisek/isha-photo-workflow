@@ -40,6 +40,16 @@
           <%= text_field_tag 'search[photographer]', @search[:photographer], :class => 'input-text FilterFormElem' %>
         </div>
       </div>
+      <div class='row'>
+        <div class='four columns'>
+          <label>Flag</label>
+          <%= select_tag 'search[flag]', options_for_select(['Red', 'Yellow', 'Normal', 'All'], @search[:flag] || 'All'), :class => 'input-text FilterFormElem' %>
+        </div>
+        <div class='four columns'>
+          <label>Status</label>
+          <%= select_tag 'search[status]', options_for_select(['Open', 'Closed'], @search[:status] || 'Open'), :class => 'input-text FilterFormElem' %>
+        </div>
+      </div>
 
       <div class='row'>
         <%= submit_tag "Search", :class => 'medium orange radius button' %>
@@ -83,7 +93,7 @@
 
     <tr>
       <td colspan=4>
-        <%= will_paginate @shoots %>
+        <%= will_paginate @shoots unless @shoots.class.name =~ /Array/ %>
       </td>
     </tr>
 
@@ -104,6 +114,10 @@
     $.each($('.FilterFormElem'), function(i, v) {
       v.value = "";
     });
+
+    $('#search_flag').val('All');
+    $('#search_status').val('Open');
+
     //return false;
   });
 

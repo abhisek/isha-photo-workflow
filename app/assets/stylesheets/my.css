@@ -1,0 +1,19 @@
+.error {
+  background: url(/assets/unchecked.gif) no-repeat 0px 0px;
+  padding-left: 16px;
+  padding-bottom: 2px;
+  font-weight: bold;
+  color: #ea5200;
+}
+
+.footer{
+  clear:both; 
+  margin-top:25px; 
+  height:50px; 
+  width:100%; 
+  background:#BA6300;
+  float:left; 
+  text-align:center;
+  line-height:50px; 
+  color:#fff;
+}
