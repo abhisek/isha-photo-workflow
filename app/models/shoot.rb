@@ -95,24 +95,26 @@ class Shoot < ActiveRecord::Base
   def flag
     shoot = self
     now = Date.current
+    ret = :none
 
     ::Shoot::MetaInfo::All.each do |mi|
       next if (!shoot.is_key_applicable?(mi[:key]))
       
       exp = Date.strptime(shoot.meta[mi[:key] + "_expected"], Date::DATE_FORMATS[:default])
       if shoot.meta[mi[:key] + "_actual"].to_s.empty? and exp < now
-        return :red
+        ret = :red
+        break
       elsif shoot.meta[mi[:key] + "_actual"].to_s.empty?
         next
       end
 
       act = Date.strptime(shoot.meta[mi[:key] + "_actual"], Date::DATE_FORMATS[:default])
       if act > exp and exp < now
-        return :yellow
+        ret = :yellow
       end
     end
     
-    return :none
+    return ret
   end
 
 end
