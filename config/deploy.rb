@@ -7,7 +7,7 @@ set :scm, :none
 set :deploy_via, :copy
 set :copy_exclude, [".git", ".gitignore"]
 
-set :user, "ec2-user"
+set :user, "web"
 set :use_sudo, false
 
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`

@@ -8,9 +8,11 @@ class Shoot < ActiveRecord::Base
   validates :description, :presence => true
   validates :photographer, :presence => true
 
+  validates_with IshaDateValidator
+
   scope :f_after_create,  lambda {|date| where('created_at > ?', date) }
   scope :f_before_create, lambda {|date| where('created_at < ?', date) }
-  scope :f_event_like,    lambda {|event| where('event LIKE ?', "%#{event}%") }
+  scope :f_event_like,    lambda {|event| where('event LIKE ? OR description LIKE ?', "%#{event}%", "%#{event}%") }
   scope :f_photographer_like, lambda {|p| where('photographer LIKE ?', "%#{p}%") }
 
   before_save :my_before_save

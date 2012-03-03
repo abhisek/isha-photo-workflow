@@ -9,17 +9,18 @@
   </thead>
 
 <% Shoot::MetaInfo::All.each do |mi| %>
-  <% next unless shoot.is_key_applicable? mi[:key] %>  
+  <% next unless @shoot.is_key_applicable? mi[:key] %>  
   <tr>
     <td><%= mi[:name] %></td>
     <td>
-      <%= text_field_tag "shoot[meta][#{mi[:key]}_expected]", shoot.meta[mi[:key] + "_expected"], :class => 'input-text', :disabled => true %>
+      <%= hidden_field_tag "shoot[meta][#{mi[:key]}_expected]", @shoot.meta[mi[:key] + "_expected"], :class => 'input-text' %>
+      <%= @shoot.meta[mi[:key] + "_expected"] %>
     </td>
     <td>
-      <%= text_field_tag "shoot[meta][#{mi[:key]}_actual]", shoot.meta[mi[:key] + "_actual"], :class => 'input-text datepicker' %>
+      <%= text_field_tag "shoot[meta][#{mi[:key]}_actual]", @shoot.meta[mi[:key] + "_actual"], :class => 'input-text datepicker' %>
     </td>
     <td>
-      <%= text_area_tag "shoot[meta][#{mi[:key]}_delay_cause]", shoot.meta[mi[:key] + "_delay_cause"], :class => 'input-text' %>
+      <%= text_area_tag "shoot[meta][#{mi[:key]}_delay_cause]", @shoot.meta[mi[:key] + "_delay_cause"], :class => 'input-text' %>
     </td>
   </tr>
 

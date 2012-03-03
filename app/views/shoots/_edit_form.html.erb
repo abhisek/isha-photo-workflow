@@ -57,6 +57,15 @@
   </div>
 
   <div class='row'>
+    <div class="three columns">
+      <div class="fleft whiteColor">Description: </div>
+      <h3 class="whiteColor"> 
+        <%= f.text_field :description, :class => 'large input-text' %>
+      </h3>
+    </div>
+  </div>
+
+  <div class='row'>
     <%= render :partial => 'form_workflow', :locals => {:f => f, :shoot => @shoot} %>
   </div>
 <% end %>
