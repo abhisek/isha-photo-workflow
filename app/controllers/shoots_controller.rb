@@ -1,4 +1,7 @@
 class ShootsController < ApplicationController
+  
+  require 'exporter/csv'
+
   before_filter :authenticate_user!
   before_filter :load_setting_data
 
@@ -51,7 +54,14 @@ class ShootsController < ApplicationController
       @shoots = @shoots.collect {|e| e if e.flag == flag}.compact
     else
       # Paginate (not compatible with non-relational filter)
-      @shoots = @shoots.paginate(:page => (params[:page] || 1), :per_page => 10)
+      @shoots = @shoots.paginate(:page => (params[:page] || 1), :per_page => 10) unless params[:opt] =~ /export/
+    end
+
+    # Export results
+    if params[:opt] =~ /export/
+      sleep 5
+      send_data build_csv_for_shoots(@shoots), :filename => 'shoots-export.csv', :disposition => 'attachment'
+      return
     end
     
     respond_to do |format|
@@ -136,6 +146,17 @@ class ShootsController < ApplicationController
 
   def load_setting_data
     @photographers = Settings.photographers
+  end
+
+  def build_csv_for_shoots(shoots)
+    csv = Exporter::CSV.new
+    csv.schema = ["id", "event", "description", "photographer", "shot on", "reported on"]
+
+    shoots.each do |s|
+      csv.add_entry([s.id, s.event, s.description, s.photographer, s.shot_on, s.reported_on])
+    end
+
+    csv.to_string
   end
 
 end

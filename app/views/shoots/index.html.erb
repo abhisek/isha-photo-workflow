@@ -5,6 +5,15 @@
       <%= link_to "Search Options", '#', :id => 'FilterButton', :class => 'small orange radius button' %>
       <%= link_to 'New Shoot', new_shoot_path, :class => 'small radius orange button' %>
     </div>
+    <div id="export_icon" class="one columns offset-by-two topMargin10">
+      <%= link_to(image_tag("famfam/page_excel.png", :title => "Export Results"), {:opt => 'export'}, :remote => true, :id => 'export-a') %>
+    </div>
+    <div id="export_spinner" class="one columns offset-by-two topMargin10" style="display:none">
+      <%= image_tag "spinner.gif" %>
+    </div>
+    <div id="export_error" class="one columns offset-by-two topMargin10" style="display:none">
+      <%= image_tag "famfam/error.png" %>
+    </div>
   </div>
   <div id='FilterBox' class='row' style='display: none'>
     <%= form_tag '/shoots/filter', :class => 'nice', :id => 'FilterForm' do %>
@@ -128,5 +137,22 @@
   $('#search_photographer').autocomplete({
     delay: 0,
     source: [<%= raw(@photographers.collect {|e| "\"#{e}\""}.join(",")) %>]
+  });
+
+  $('#export-a').bind('ajax:beforeSend', function(r) {
+    alert(1);
+    $('#export_icon').hide();
+    $('#export_error').hide();
+    $('#export_spinner').show();
+  });
+  $('#export-a').bind('ajax:success', function(r) {
+    $('#export_error').hide();
+    $('#export_spinner').hide();
+    $('#export_icon').show();
+  });
+  $('#export-a').bind('ajax:error', function(r) {
+    $('#export_spinner').hide();
+    $('#export_icon').hide();
+    $('#export_error').show();
   });
 </script>
