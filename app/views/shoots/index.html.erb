@@ -6,7 +6,7 @@
       <%= link_to 'New Shoot', new_shoot_path, :class => 'small radius orange button' %>
     </div>
     <div id="export_icon" class="one columns offset-by-two topMargin10">
-      <%= link_to(image_tag("famfam/page_excel.png", :title => "Export Results"), {:opt => 'export'}, :remote => true, :id => 'export-a') %>
+      <%= link_to(image_tag("famfam/page_excel.png", :title => "Export Results"), {:opt => 'export'}) %>
     </div>
     <div id="export_spinner" class="one columns offset-by-two topMargin10" style="display:none">
       <%= image_tag "spinner.gif" %>
@@ -139,20 +139,4 @@
     source: [<%= raw(@photographers.collect {|e| "\"#{e}\""}.join(",")) %>]
   });
 
-  $('#export-a').bind('ajax:beforeSend', function(r) {
-    alert(1);
-    $('#export_icon').hide();
-    $('#export_error').hide();
-    $('#export_spinner').show();
-  });
-  $('#export-a').bind('ajax:success', function(r) {
-    $('#export_error').hide();
-    $('#export_spinner').hide();
-    $('#export_icon').show();
-  });
-  $('#export-a').bind('ajax:error', function(r) {
-    $('#export_spinner').hide();
-    $('#export_icon').hide();
-    $('#export_error').show();
-  });
 </script>

@@ -17,7 +17,7 @@ module Exporter
     def to_string(sep = "\t")
       r = String.new
       r << @schema.collect {|e| e.capitalize}.join(sep) << "\n"
-      r << @entries.inject("") {|re, ee| re << ee.join(sep); re} << "\n"
+      r << @entries.inject("") {|re, ee| re << ee.join(sep) << "\n"; re}
 
       r
     end
