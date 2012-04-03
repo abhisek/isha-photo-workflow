@@ -98,6 +98,13 @@
         <%= link_to image_tag('famfam/delete.png'), shoot, :confirm => 'Are you sure?', :method => :delete, :title => 'Delete Shoot' %>
       </td>
     </tr>
+    <tr class='shoot-desc' eid=<%= shoot.id %>>
+      <td colspan=7 style='padding: 1em;'>
+        <small>
+          <%= shoot.description %>
+        </small>
+      </td>
+    </tr>
   <% end %>
 
     <tr>

@@ -40,7 +40,7 @@ class Shoot < ActiveRecord::Base
         :off  => 2.days
       },
       {
-        :name => 'Compiled and Checked',
+        :name => 'Complied, Checked and Shifted to the Server',
         :key  => 'compcheck',
         :off  => 3.days
       },
@@ -57,12 +57,12 @@ class Shoot < ActiveRecord::Base
       {
         :name => 'Shifted to LTO',
         :key  => 'shiflto',
-        :off  => 7.days
+        :off  => :next_month_4
       },
       {
         :name => 'Thumbnail',
         :key  => 'thmbn',
-        :off  => 30.days
+        :off  => :next_month_10
       }
     ]
   end
@@ -71,7 +71,7 @@ class Shoot < ActiveRecord::Base
     rd = self.reported_on
 
     MetaInfo::All.each do |mi|
-      self.meta[mi[:key] + "_expected"] = (rd + mi[:off]).strftime(Date::DATE_FORMATS[:default])
+      self.meta[mi[:key] + "_expected"] = (to_effective(rd, mi[:off])).strftime(Date::DATE_FORMATS[:default])
     end
 
     # Ensure correctness of date format
@@ -119,4 +119,31 @@ class Shoot < ActiveRecord::Base
     return ret
   end
 
+  private
+  def to_effective(base, off)
+    if off == :next_month_4
+      next_month_day(base, 4)
+    elsif off == :next_month_10
+      next_month_day(base, 10)
+    else
+      base + off
+    end
+  end
+
+  def next_month_day(date, day)
+    d = date.day
+    m = date.month
+    y = date.year
+
+    if m == 12
+      m = 1
+      y += 1
+    else
+      m += 1
+    end
+
+    d = day
+
+    Date.strptime("#{d}/#{m}/#{y}", Date::DATE_FORMATS[:default])
+  end
 end
