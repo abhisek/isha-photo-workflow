@@ -3,6 +3,15 @@ Ruby Setup
 
 Install Ruby 1.9 and rubygems
 
+Application Installation
+-------------------------
+
+Fetch the application source from github using the following command (assuming you have git installed, if not use: apt-get install git-core): 
+```
+git clone https://github.com/abhisek/isha-photo-workflow.git
+```
+
+The application source will be fetched in isha-photo-workflow directory under current directory.
 
 Database Setup
 ---------------
