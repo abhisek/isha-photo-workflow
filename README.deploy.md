@@ -83,11 +83,13 @@ In order to deploy updates, issue the following command:
 ```
 git pull -u
 ```
-This assumes you have installed (fetched sources) the application using git as mentioned previously this document.
+This assumes you have installed (fetched sources) the application using git as mentioned previously in this document.
 Once sources are update, issue the following command to update the database schema:
 ```
 rake db:migrate
 ```
+
+Restart the application by killing all "rails" processes and following *Application Server* section.
 
 
 
