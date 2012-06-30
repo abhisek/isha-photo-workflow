@@ -52,11 +52,42 @@ Application Server
 
 * Start the application server using the following command:
 
-  bundle exec rails s -p 8080
+```
+bundle exec rails s -p 8080
+```
 
 This will start the application server on port 8080. Now you can browse the application
 by visiting http://<IP>:8080/
 
+If you experience slowdown in the application, run the application in production mode:
+
+* Compile Assets:
+```
+rake assets:precompile
+```
+* Start Application Server in production mode:
+```
+bundle exec rails s -p 8080 -e production
+```
+
+Remote Update
+--------------
+
+Do take a database backup before attempting to update anything:
+```
+mysqldump -u user -p database > backup.sql
+```
+
+In order to deploy updates, issue the following command:
+
+```
+git pull -u
+```
+This assumes you have installed (fetched sources) the application using git as mentioned previously this document.
+Once sources are update, issue the following command to update the database schema:
+```
+rake db:migrate
+```
 
 
 
