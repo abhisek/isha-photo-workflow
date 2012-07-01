@@ -50,3 +50,5 @@ end
 require 'common/settings'
 
 Settings.init
+Socket.do_not_reverse_lookup = true
+

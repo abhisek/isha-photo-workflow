@@ -19,9 +19,6 @@ class ShootsController < ApplicationController
       @shoots = Shoot.where(:active => true)
     end
 
-    # Order
-    @shoots = @shoots.order('created_at DESC')
-
     # Filter
     @search.keys.each do |key|
       unless @search[key].to_s.empty?
@@ -46,6 +43,15 @@ class ShootsController < ApplicationController
       end
     end
 
+    # Order
+    if params[:order]
+      @o = params[:o].to_s == 'ASC' ? 'ASC' : 'DESC'
+      @oq = params[:order] == 'shot_on' ? 'shot_on' : 'reported_on'
+      @shoots = @shoots.order("#{@oq} #{@o}")
+    else
+      @shoots = @shoots.order('created_at DESC')
+    end
+
     if (flag = {
         'Red'       => :red,
         'Yellow'    => :yellow,
@@ -59,7 +65,7 @@ class ShootsController < ApplicationController
 
     # Export results
     if params[:opt] =~ /export/
-      sleep 5
+      #sleep 5
       send_data build_csv_for_shoots(@shoots), :filename => 'shoots-export.csv', :disposition => 'attachment'
       return
     end
@@ -156,7 +162,7 @@ class ShootsController < ApplicationController
       csv.add_entry([s.id, s.event, s.description, s.photographer, s.shot_on, s.reported_on])
     end
 
-    csv.to_string
+    csv.to_string(",")
   end
 
 end

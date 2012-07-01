@@ -3,6 +3,7 @@
     <div class="three columns"> <h3 class="whiteColor">Listing Shoots</h3></div> 
     <div class="six columns topMargin10">
       <%= link_to "Search Options", '#', :id => 'FilterButton', :class => 'small orange radius button' %>
+      <%= link_to "Batch Operations", '#', :id => 'BatchButton', :class => 'small orange radius button' %>
       <%= link_to 'New Shoot', new_shoot_path, :class => 'small radius orange button' %>
     </div>
     <div id="export_icon" class="one columns offset-by-two topMargin10">
@@ -69,6 +70,12 @@
     <% end %>
     <br/>
   </div>
+  <div id='BatchOpsBox' class='row' style='display: none'>
+    <div class='loginBox' style='margin-top: 2em;'>
+      <% Shoot::MetaInfo::All.each do |mi| %>
+      <% end %>
+    </div>
+  </div>
 </div>
 
 <div class='row'>
@@ -78,20 +85,20 @@
       <th>ID</th>
       <th>Event</th>
       <th>Photographer</th>
-      <th>Shot On</th>
-      <th>Reported On</th>
+      <th><%= link_to "Shot On", {:order => 'shot_on', :o => (@o == 'ASC' ? 'DESC' : 'ASC') } %></th>
+      <th><%= link_to "Reported On", {:order => 'reported_on', :o => (@o == 'ASC' ? 'DESC' : 'ASC') } %></th>
       <th width='15%'></th>
     </tr>
     </thead>
 
   <% @shoots.each do |shoot| %>
-    <tr class='eClickable' eid=<%= shoot.id %> >
+    <tr eid=<%= shoot.id %> >
 
-      <td><%= shoot.id %> <%= tag_shoot_entry(shoot) %></td>
-      <td><%= shoot.event %></td>
-      <td><%= shoot.photographer %></td>
-      <td><%= shoot.shot_on %></td>
-      <td><%= shoot.reported_on %></td>
+      <td><%= check_box_tag "shoot_select_#{shoot.id}", shoot.id, false, :class => 'shoot-check-box' %> <%= shoot.id %> <%= tag_shoot_entry(shoot) %></td>
+      <td class='eClickable'><%= shoot.event %></td>
+      <td class='eClickable'><%= shoot.photographer %></td>
+      <td class='eClickable'><%= shoot.shot_on %></td>
+      <td class='eClickable'><%= shoot.reported_on %></td>
       <td>
         <%= link_to image_tag('famfam/application_view_icons.png'), shoot, :title => 'View Shoot' %> &nbsp; &nbsp; 
         <%= link_to image_tag('famfam/application_edit.png'), edit_shoot_path(shoot), :title => 'Edit Shoot' %> &nbsp; &nbsp;
@@ -138,12 +145,41 @@
   });
 
   $('.eClickable').click(function() {
-    window.location = '/shoots/' + $(this).attr('eid');    
+    window.location = '/shoots/' + $(this).parent().attr('eid');    
   });
 
   $('#search_photographer').autocomplete({
     delay: 0,
     source: [<%= raw(@photographers.collect {|e| "\"#{e}\""}.join(",")) %>]
   });
+  $('#BatchButton').click(function() {
+    if($('input:checked').length == 0) {
+      alert('You must select at least 1 shoot before attempting batch operation');
+      return false;
+    }
+    else {
+      $('#BatchOpsBox').toggle();
+    }
+  });
+  $('#BatchExecuteButton').click(function() {
+    var shoot_ids = [];
+    $.each($('input:checked'), function(i, v) {
+      shoot_ids.push(v);
+    });
 
+    $.ajax({
+      url: '/batch_update',
+      type: 'POST',
+      data: shoot_ids,
+      beforeSend: function(xhr) {
+
+      }
+    }).done(function(data) {
+      alert('Batch Update Successful');
+    }).fail(function() {
+      alert('Error Occurred in AJAX Request');
+    }).always(function() {
+      
+    });
+  });
 </script>
