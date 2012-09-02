@@ -1,6 +1,7 @@
 PhotoTrack::Application.routes.draw do
   # Filter
-  match '/shoots/filter' => 'shoots#index'
+  match '/shoots/filter'  => 'shoots#index'
+  post  '/batch_update'   => 'shoots#batch_update'
 
   resources :shoots
 

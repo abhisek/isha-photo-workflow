@@ -148,6 +148,23 @@ class ShootsController < ApplicationController
     end
   end
 
+  # POST /batch_update?si=...
+  #
+  # @si: List of IDs to update
+  # @form data: Update Data
+  #
+  def batch_update
+    begin
+      Shoot.find(params[:si].split(",").map {|n| n.to_i}).each do |shoot|
+        ret = shoot.update_attributes(params[:shoot])
+      end
+
+      render :json => {:error => "SUCCESS"}
+    rescue => e
+      render :json => {:error => e.message }
+    end
+  end
+
   private
 
   def load_setting_data

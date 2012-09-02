@@ -71,8 +71,44 @@
     <br/>
   </div>
   <div id='BatchOpsBox' class='row' style='display: none'>
-    <div class='loginBox' style='margin-top: 2em;'>
+    <div class='loginBox' style='margin-top: 2em;margin-bottom:1em;'>
+      <%= form_tag '/', :id => 'BatchUpdateForm' do %>
+      <table class="clear topMargin10"> 
+      <thead> 
+        <tr>
+        <th style="width:20%;"></th> 
+        <th style="width:15%;">Actual Date</th> 
+        <th>Delay Cause</th> 
+        </tr>
+      </thead>
+
       <% Shoot::MetaInfo::All.each do |mi| %>
+        <tr>
+          <td><%= mi[:name] %></td>
+          <td>
+            <%= text_field_tag "shoot[meta][#{mi[:key]}_actual]", nil, :class => 'input-text datepicker' %>
+          </td>
+          <td>
+            <%= text_area_tag "shoot[meta][#{mi[:key]}_delay_cause]", nil, :class => 'input-text' %>
+          </td>
+        </tr>
+      <% end %>
+        <tr>
+          <td>
+            <div id='BatchUpdateMsg1' style='display: none; padding-left:2em;'>
+              <%= image_tag "spinner.gif" %> Updating..
+            </div>
+          </td>
+          <td>
+            <%= submit_tag "Submit", :id => "BatchExecuteButton", :class => 'radius orange button' %>
+            <%= button_tag "Cancel", :class => 'radius orange button', :onclick => '$("#BatchOpsBox").hide(); return false;' %>
+          </td>
+          <td>
+            <div id='BatchUpdateMsg2' style=''>
+            </div>
+          </td>
+        </tr>
+      </table>
       <% end %>
     </div>
   </div>
@@ -164,22 +200,26 @@
   $('#BatchExecuteButton').click(function() {
     var shoot_ids = [];
     $.each($('input:checked'), function(i, v) {
-      shoot_ids.push(v);
+      shoot_ids.push($(v).val());
     });
 
     $.ajax({
-      url: '/batch_update',
+      url: '/batch_update?si=' + shoot_ids.join(','),
       type: 'POST',
-      data: shoot_ids,
+      data: $('#BatchUpdateForm').serialize(),
       beforeSend: function(xhr) {
 
       }
     }).done(function(data) {
-      alert('Batch Update Successful');
+      //alert('Batch Update Successful');
+      $('#BatchUpdateMsg2').html("<font color='green'>Updated successfully.</font>");
     }).fail(function() {
       alert('Error Occurred in AJAX Request');
+      $('#BatchUpdateMsg2').html("<font color='red'>Failed to update.</font>");
     }).always(function() {
-      
+      //window.location.reload();      
     });
+
+    return false; // prevent default
   });
 </script>
