@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120229183153) do
+ActiveRecord::Schema.define(:version => 20120902151801) do
 
   create_table "shoot_logs", :force => true do |t|
     t.integer  "shoot_id"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(:version => 20120229183153) do
     t.boolean  "active",       :default => true
   end
 
+  add_index "shoots", ["active"], :name => "index_shoots_on_active"
   add_index "shoots", ["description"], :name => "index_shoots_on_description"
   add_index "shoots", ["event"], :name => "index_shoots_on_event"
   add_index "shoots", ["id"], :name => "index_shoots_on_id"
