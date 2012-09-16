@@ -156,7 +156,16 @@ class ShootsController < ApplicationController
   def batch_update
     begin
       Shoot.find(params[:si].split(",").map {|n| n.to_i}).each do |shoot|
-        ret = shoot.update_attributes(params[:shoot])
+        orig_meta = shoot[:meta]
+        
+        # Ensure blank meta entries are ignored
+        shoot_attr = params[:shoot]
+        shoot_attr[:meta].keys.each do |k|
+          shoot_attr[:meta].delete(k) if shoot_attr[:meta][k].to_s.empty?
+        end
+
+        shoot_attr[:meta] = orig_meta.merge(shoot_attr[:meta])
+        ret = shoot.update_attributes(shoot_attr)
       end
 
       render :json => {:error => "SUCCESS"}
