@@ -10,7 +10,11 @@ class ShootsController < ApplicationController
   def index
     session[:search] ||= {}
     session[:search].merge!((params[:search] || {}).symbolize_keys)
+    session[:per_page_count] ||= 10
+    session[:per_page_count] = params[:per_page_count].to_i unless params[:per_page_count].to_i.zero?
+
     @search = session[:search]
+    @per_page_count = session[:per_page_count]
 
     # Find all
     if @search[:status].to_s =~ /closed/i
@@ -60,7 +64,7 @@ class ShootsController < ApplicationController
       @shoots = @shoots.collect {|e| e if e.flag == flag}.compact
     else
       # Paginate (not compatible with non-relational filter)
-      @shoots = @shoots.paginate(:page => (params[:page] || 1), :per_page => 10) unless params[:opt] =~ /export/
+      @shoots = @shoots.paginate(:page => (params[:page] || 1), :per_page => @per_page_count) unless params[:opt] =~ /export/
     end
 
     # Export results

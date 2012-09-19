@@ -154,6 +154,12 @@
       <td colspan=4>
         <%= will_paginate @shoots unless @shoots.class.name =~ /Array/ %>
       </td>
+      <td colspan=3 align='right'>
+        <div id='per-page-count-container'>
+          Entries Per Page: 
+          <%= text_field_tag 'per_page_count', (@per_page_count || 10), :size => 6 %> <%= submit_tag 'Update', :id => 'per-page-update-submit' %>
+        </div>
+      </td>
     </tr>
 
   </table>
@@ -221,5 +227,13 @@
     });
 
     return false; // prevent default
+  });
+
+  $('#per-page-update-submit').click(function() {
+    var loc = window.location.href;
+    var ppc = $('#per_page_count').val();
+
+    window.location = '/?per_page_count=' + ppc;
+    return false;
   });
 </script>
